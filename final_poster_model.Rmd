@@ -1,0 +1,394 @@
+---
+title: "Final Poster Model"
+author: "Rose Austin"
+date: "Due on December 13, 2023"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(fig.align='center', dpi=100, message=FALSE, warning=FALSE, cache=FALSE)
+output = opts_knit$get("rmarkdown.pandoc.to")
+if(!is.null(output)) {
+  if (output=="html") opts_chunk$set(out.width = '400px') else
+    opts_chunk$set(out.width='.6\\linewidth')
+}
+```
+
+#1
+Data
+    ```{r}
+    #Used Libraries
+    library(readr)
+    library(ggplot2)
+    library(dplyr)
+    library(modelr)
+    library(forecast)
+    library(reshape2)
+    ```
+
+    ```{r}
+    #Load and clean AQI data
+
+    data_1984 <- read.csv("daily_aqi_by_county_1984.csv")
+    data_1984_trim <- data_1984 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1985 <- read.csv("daily_aqi_by_county_1985.csv")
+    data_1985_trim <- data_1985 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1986 <- read.csv("daily_aqi_by_county_1986.csv")
+    data_1986_trim <- data_1986 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1987 <- read.csv("daily_aqi_by_county_1987.csv")
+    data_1987_trim <- data_1987 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1988 <- read.csv("daily_aqi_by_county_1988.csv")
+    data_1988_trim <- data_1988 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1989 <- read.csv("daily_aqi_by_county_1989.csv")
+    data_1989_trim <- data_1989 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1990 <- read.csv("daily_aqi_by_county_1990.csv")
+    data_1990_trim <- data_1990 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1991 <- read.csv("daily_aqi_by_county_1991.csv")
+    data_1991_trim <- data_1991 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1992 <- read.csv("daily_aqi_by_county_1992.csv")
+    data_1992_trim <- data_1992 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1993 <- read.csv("daily_aqi_by_county_1993.csv")
+    data_1993_trim <- data_1993 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1994 <- read.csv("daily_aqi_by_county_1994.csv")
+    data_1994_trim <- data_1994 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1995 <- read.csv("daily_aqi_by_county_1995.csv")
+    data_1995_trim <- data_1995 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1996 <- read.csv("daily_aqi_by_county_1996.csv")
+    data_1996_trim <- data_1996 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1997 <- read.csv("daily_aqi_by_county_1997.csv")
+    data_1997_trim <- data_1997 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1998 <- read.csv("daily_aqi_by_county_1998.csv")
+    data_1998_trim <- data_1998 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_1999 <- read.csv("daily_aqi_by_county_1999.csv")
+    data_1999_trim <- data_1999 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2000 <- read.csv("daily_aqi_by_county_2000.csv")
+    data_2000_trim <- data_2000 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2001 <- read.csv("daily_aqi_by_county_2001.csv")
+    data_2001_trim <- data_2001 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2002 <- read.csv("daily_aqi_by_county_2002.csv")
+    data_2002_trim <- data_2002 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2003 <- read.csv("daily_aqi_by_county_2003.csv")
+    data_2003_trim <- data_2003 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2004 <- read.csv("daily_aqi_by_county_2004.csv")
+    data_2004_trim <- data_2004 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2005 <- read.csv("daily_aqi_by_county_2005.csv")
+    data_2005_trim <- data_2005 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2006 <- read.csv("daily_aqi_by_county_2006.csv")
+    data_2006_trim <- data_2006 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2007 <- read.csv("daily_aqi_by_county_2007.csv")
+    data_2007_trim <- data_2007 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2008 <- read.csv("daily_aqi_by_county_2008.csv")
+    data_2008_trim <- data_2008 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2009 <- read.csv("daily_aqi_by_county_2009.csv")
+    data_2009_trim <- data_2009 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2010 <- read.csv("daily_aqi_by_county_2010.csv")
+    data_2010_trim <- data_2010 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2011 <- read.csv("daily_aqi_by_county_2011.csv")
+    data_2011_trim <- data_2011 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2012 <- read.csv("daily_aqi_by_county_2012.csv")
+    data_2012_trim <- data_2012 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    
+    data_2013 <- read.csv("daily_aqi_by_county_2013.csv")
+    data_2013_trim <- data_2013 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+
+    data_2014 <- read.csv("daily_aqi_by_county_2014.csv")
+    data_2014_trim <- data_2014 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+
+    data_2015 <- read.csv("daily_aqi_by_county_2015.csv")
+    data_2015_trim <- data_2015 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+
+    data_2016 <- read.csv("daily_aqi_by_county_2016.csv")
+    data_2016_trim <- data_2016 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+
+    data_2017 <- read.csv("daily_aqi_by_county_2017.csv")
+    data_2017_trim <- data_2017 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+
+    data_2018 <- read.csv("daily_aqi_by_county_2018.csv")
+    data_2018_trim <- data_2018 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+
+    data_2019 <- read.csv("daily_aqi_by_county_2019.csv")
+    data_2019_trim <- data_2019 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+
+    data_2020 <- read.csv("daily_aqi_by_county_2020.csv")
+    data_2020_trim <- data_2020 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+
+    data_2021 <- read.csv("daily_aqi_by_county_2021.csv")
+    data_2021_trim <- data_2021 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+
+    data_2022 <- read.csv("daily_aqi_by_county_2022.csv")
+    data_2022_trim <- data_2022 %>%
+        group_by(Date, State.Name) %>%
+        summarize(Average_AQI = mean(AQI))
+    ```  
+
+```{r}
+data_40_yr <- rbind(data_1984_trim, data_1985_trim, data_1986_trim, data_1987_trim, data_1988_trim, data_1989_trim, data_1990_trim, data_1991_trim, data_1992_trim, data_1993_trim, data_1994_trim, data_1995_trim, data_1996_trim, data_1997_trim, data_1998_trim, data_1999_trim, data_2000_trim, data_2001_trim, data_2002_trim, data_2003_trim, data_2004_trim, data_2005_trim, data_2006_trim, data_2007_trim, data_2008_trim, data_2009_trim, data_2010_trim, data_2011_trim, data_2012_trim, data_2013_trim, data_2014_trim, data_2015_trim, data_2016_trim, data_2017_trim, data_2018_trim, data_2019_trim, data_2020_trim, data_2021_trim, data_2022_trim)
+
+data_40_yr$Date <- format(as.Date(data_40_yr$Date), "%Y-%m")
+```
+
+#2
+Model
+    ```{r}
+    #Simpler Data Set
+    us_aqi_data <- data_40_yr %>%
+        group_by(Date) %>%
+        summarize(US_Average_AQI = mean(Average_AQI))
+    ```
+
+    ```{r}
+    #Time series model
+    tAQI <- ts(us_aqi_data$US_Average_AQI, start = c(1984,1), frequency = 12)
+
+    plot(tAQI)
+    ```
+
+    ```{r}
+    #Log transformation to stabilize variance if needed
+    tAQI <- ts(log(us_aqi_data$US_Average_AQI), start = c(1984,1), frequency = 12)
+
+    plot(tAQI)
+    ```
+
+    ```{r}
+    #Find best ARIMA model
+    aModel <- auto.arima(tAQI)
+
+    summary(aModel)
+    ```
+
+    ```{r}
+    #Residual diagnosis
+    qplot(fitted(aModel), resid(aModel))
+
+    acf(resid(aModel))
+    ```
+
+    ```{r}
+    plot(tAQI) ; lines(fitted(aModel), col = "red")
+
+   plot(tAQI, ylab = "Average AQI")
+lines(fitted(aModel), col = "red")
+
+plot(exp(tAQI), ylab = "Average AQI")
+lines(exp(fitted(aModel)), col = "red")
+    ```
+
+    ```{r}
+    fCast <- forecast(aModel)
+
+    plot(fCast, main = "Forcasted AQI Using ARIMA")
+    ```
+#3
+Heat Map
+```{r}
+library(ggplot2)
+library(maps)
+library(dplyr)
+
+annual_aqi_by_county_2022 <- read.csv("annual_aqi_by_county_2022.csv")
+
+# Download county-level map data
+us_states <- map_data('state')
+us_counties <- map_data("county")
+data <- annual_aqi_by_county_2022 %>%
+  select(State, County, Max.AQI) %>%
+  mutate(state = tolower(State)) %>%
+  mutate(county = tolower(County)) %>%
+  arrange(state, county)
+  
+
+View(us_counties)
+View(data)
+
+
+# Inner join your data with the map data using dplyr's inner_join
+merged_data <- left_join(us_counties, data, by = c("region" = "state", "subregion" = "county"))
+View(merged_data)
+
+
+# Define breaks for fill color
+breaks <- c(0, 50, 100, 150, 200, 250, 300)  # Modify these as needed
+
+# Plotting
+
+
+
+countyplot <- ggplot() +
+  geom_polygon(data = merged_data, aes(x = long, y = lat, group = group, fill = Max.AQI),
+               color = "white", size = 0.2) +
+  geom_path(data = us_states, aes(x = long, y = lat, group = group), color = "black")+
+  scale_fill_gradientn(colours = c("lightblue", "red2"), 
+                       breaks = breaks, 
+                       limits = c(0, 300), 
+                       name = "Days with Highest AQI", 
+                       guide = "legend") +
+  labs(title = "Days with AQI by County") +
+  theme_minimal()
+
+countyplot
+
+```
+
+```{r}
+ggplot() +
+  geom_polygon(data = merged_data, aes(x = long, y = lat, group = group, fill = Max.AQI),
+               color = "white", size = 0.2) +
+  geom_path(data = us_states, aes(x = long, y = lat, group = group), color = "black") +
+  scale_fill_gradientn(colours = c("lightblue", "red2"), 
+                       breaks = breaks, 
+                       limits = c(0, 300), 
+                       name = "Days with Highest AQI", 
+                       guide = "legend") +
+  labs(title = "Days with Highest AQI by County") +
+  theme_void() # Remove grid lines and axes
+```
+
+#4
+```{r}
+annual_data_2012 <- read.csv("annual_aqi_by_county_2012.csv")
+annual_data_2022 <- read.csv("annual_aqi_by_county_2022.csv")
+
+View(annual_data_2012)
+```
+
+```{r}
+dat_2012 <- annual_data_2012 %>% select(County, State, Median.AQI)
+dat_2022 <- annual_data_2022 %>% select(County, State, Median.AQI)
+
+merged_data <- full_join(dat_2012, dat_2022, by = c("County", "State"))
+
+merged_data <- mutate(merged_data, AQI_Difference = Median.AQI.y - Median.AQI.x)
+
+top_differences <- merged_data %>%
+  filter(State != "Country Of Mexico") %>%
+  arrange(desc(AQI_Difference))
+
+top_10_differences <- head(top_differences, 10)
+
+library(ggplot2)
+
+ggplot(data = top_10_differences, aes(x = reorder(paste(County, State, sep = ", "), AQI_Difference), y = AQI_Difference, fill = State)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Top 10 Counties with Largest Differences in Median AQI (2012-2022)",
+    y = "Median AQI Difference",
+    x = "County",
+    fill = "State"
+  ) +
+  scale_fill_manual(values = scales::brewer_pal(palette = "Blues")(length(unique(top_10_differences$State)))) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank()) +
+  guides(fill = FALSE) +
+  coord_flip()
+```
+
