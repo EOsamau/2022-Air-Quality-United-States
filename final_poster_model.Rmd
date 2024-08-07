@@ -1,7 +1,6 @@
 ---
 title: "Final Poster Model"
-author: "Rose Austin"
-date: "Due on December 13, 2023"
+author: "Authors in Read ME"
 output: pdf_document
 ---
 
