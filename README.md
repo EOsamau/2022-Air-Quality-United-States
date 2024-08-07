@@ -27,8 +27,8 @@ Visualizations
 The study highlights the importance of continuous monitoring and management of air quality. With the right policies and interventions, the positive trends in air quality can be sustained, leading to healthier living environments.
 
 ## Contributors:
-Austin Rose
-Emmanuel Osamu
-Fidel Nkwocha
-Harinath Reddy Nallagonda
-Nagesh Palukuru
+Emmanuel Osamau,
+Austin Rose,
+Fidel Nkwocha,
+Harinath Reddy Nallagonda,
+Nagesh Palukuru.
